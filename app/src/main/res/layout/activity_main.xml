@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="30dp"
+    android:paddingBottom="50dp"
+    android:background="@color/white"
+    tools:context=".MainActivity">
+    
+    <TextView
+        android:id="@+id/expressao"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        android:ellipsize="start"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/resultado"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        android:ellipsize="start"
+        android:singleLine="true"
+        android:text="0"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        
+        <Button
+            android:id="@+id/limpar"
+            style="@style/operator_button"
+            android:background="@drawable/seletor_botao"
+            android:textColor="@android:color/holo_red_light"
+            android:text="C"/>
+
+        <Button
+            android:id="@+id/divisao"
+            android:background="@drawable/seletor_botao"
+            style="@style/operator_button"
+            android:text="/"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_sete"
+            style="@style/number_button"
+            android:text="7"/>
+
+        <Button
+            android:id="@+id/bt_oito"
+            style="@style/number_button"
+            android:text="8"/>
+
+        <Button
+            android:id="@+id/bt_nove"
+            style="@style/number_button"
+            android:text="9"/>
+
+        <Button
+            android:id="@+id/multiplicacao"
+            android:background="@drawable/seletor_botao"
+            style="@style/operator_button"
+            android:text="x"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_quatro"
+            style="@style/number_button"
+            android:text="4"/>
+
+        <Button
+            android:id="@+id/bt_cinco"
+            style="@style/number_button"
+            android:text="5"/>
+
+        <Button
+            android:id="@+id/bt_seis"
+            style="@style/number_button"
+            android:text="6"/>
+
+        <Button
+            android:id="@+id/subtracao"
+            android:background="@drawable/seletor_botao"
+            style="@style/operator_button"
+            android:text="-"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_um"
+            style="@style/number_button"
+            android:text="1"/>
+
+        <Button
+            android:id="@+id/bt_dois"
+            style="@style/number_button"
+            android:text="2"/>
+
+        <Button
+            android:id="@+id/bt_tres"
+            style="@style/number_button"
+            android:text="3"/>
+
+        <Button
+            android:id="@+id/soma"
+            android:background="@drawable/seletor_botao"
+            style="@style/operator_button"
+            android:text="+"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_ponto"
+            style="@style/number_button"
+            android:text="."/>
+
+        <Button
+            android:id="@+id/bt_zero"
+            style="@style/number_button"
+            android:text="0"/>
+
+        <ImageButton
+            android:id="@+id/bt_deletar"
+            android:background="@drawable/selector_del"
+            style="@style/number_button"
+            android:src="@drawable/baseline_backspace_24" />
+
+        <Button
+            android:id="@+id/bt_resultado"
+            android:background="@drawable/seletor_botao"
+            style="@style/operator_button"
+            android:text="="/>
+
+    </LinearLayout>
+
+</LinearLayout>
