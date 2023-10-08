@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.ahpp.calculadora"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -71,6 +71,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.activity:activity-compose:1.8.0-rc01")
+    implementation ("com.google.android.material:material:1.8.0")
     implementation("net.objecthunter:exp4j:0.4.8")
 
 }

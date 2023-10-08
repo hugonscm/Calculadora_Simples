@@ -1,7 +1,7 @@
 package com.ahpp.calculadora
 
 import android.os.Bundle
-import android.util.Log
+import android.widget.HorizontalScrollView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -24,38 +24,52 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ChangeSystemBarsTheme(!isSystemInDarkTheme())
             binding = ActivityMainBinding.inflate(layoutInflater)
             setContentView(binding.root)
 
+            ChangeSystemBarsTheme(!isSystemInDarkTheme())
+
             Locale.setDefault(Locale("en", "US"))
 
+            // Disable the keyboard on display EditText
+            binding.input.showSoftInputOnFocus = false
+
+            // Focus by default
+            binding.input.requestFocus()
+
+            //ISSO AQUI DA ERRO DE VEZ ENQUANDO NAO SEI PQ
+            binding.btLimpar.setOnLongClickListener {
+                binding.input.setText("")
+                binding.resultDisplay.text = ""
+                true
+            }
+
             //numeros
-            binding.btZero.setOnClickListener{ AcrescentarExpressao("0", true)
+            binding.bt0.setOnClickListener{ AcrescentarExpressao("0", true)
                 canAddOperation = true}
-            binding.btUm.setOnClickListener{AcrescentarExpressao("1", true)
+            binding.bt1.setOnClickListener{AcrescentarExpressao("1", true)
                 canAddOperation = true}
-            binding.btDois.setOnClickListener{AcrescentarExpressao("2", true)
+            binding.bt2.setOnClickListener{AcrescentarExpressao("2", true)
                 canAddOperation = true}
-            binding.btTres.setOnClickListener{AcrescentarExpressao("3", true)
+            binding.bt3.setOnClickListener{AcrescentarExpressao("3", true)
                 canAddOperation = true}
-            binding.btQuatro.setOnClickListener{AcrescentarExpressao("4", true)
+            binding.bt4.setOnClickListener{AcrescentarExpressao("4", true)
                 canAddOperation = true}
-            binding.btCinco.setOnClickListener{AcrescentarExpressao("5", true)
+            binding.bt5.setOnClickListener{AcrescentarExpressao("5", true)
                 canAddOperation = true}
-            binding.btSeis.setOnClickListener{AcrescentarExpressao("6", true)
+            binding.bt6.setOnClickListener{AcrescentarExpressao("6", true)
                 canAddOperation = true}
-            binding.btSete.setOnClickListener{AcrescentarExpressao("7", true)
+            binding.bt7.setOnClickListener{AcrescentarExpressao("7", true)
                 canAddOperation = true}
-            binding.btOito.setOnClickListener{AcrescentarExpressao("8", true)
+            binding.bt8.setOnClickListener{AcrescentarExpressao("8", true)
                 canAddOperation = true}
-            binding.btNove.setOnClickListener{AcrescentarExpressao("9", true)
+            binding.bt9.setOnClickListener{AcrescentarExpressao("9", true)
                 canAddOperation = true}
-            binding.btPonto.setOnClickListener{AcrescentarExpressao(".", true)
+            binding.btVirg.setOnClickListener{AcrescentarExpressao(".", true)
                 canAddOperation = false}
 
             //operadores
-            binding.soma.setOnClickListener {
+            binding.btSom.setOnClickListener {
                 if (canAddOperation){
                     AcrescentarExpressao("+", false)
                     canAddOperation = false
@@ -64,7 +78,7 @@ class MainActivity : ComponentActivity() {
                     avisoExpressao()
                 }
             }
-            binding.subtracao.setOnClickListener {
+            binding.btSub.setOnClickListener {
                 if (canAddOperation){
                     AcrescentarExpressao("-", false)
                     canAddOperation = false
@@ -73,7 +87,7 @@ class MainActivity : ComponentActivity() {
                     avisoExpressao()
                 }
             }
-            binding.divisao.setOnClickListener {
+            binding.btDiv.setOnClickListener {
                 if (canAddOperation){
                     AcrescentarExpressao("/", false)
                     canAddOperation = false
@@ -82,7 +96,7 @@ class MainActivity : ComponentActivity() {
                     avisoExpressao()
                 }
             }
-            binding.multiplicacao.setOnClickListener {
+            binding.btMult.setOnClickListener {
                 if (canAddOperation){
                     AcrescentarExpressao("*", false)
                     canAddOperation = false
@@ -91,43 +105,58 @@ class MainActivity : ComponentActivity() {
                     avisoExpressao()
                 }
             }
-            binding.limpar.setOnClickListener {
-                binding.expressao.text = ""
-                binding.resultado.text = ""
+
+            binding.btPow.setOnClickListener {
+                if (canAddOperation){
+                    AcrescentarExpressao("^", false)
+                    canAddOperation = false
+                    canAddDot= true
+                } else {
+                    avisoExpressao()
+                }
+            }
+
+            binding.btClearAll.setOnClickListener {
+                binding.input.setText("")
+                binding.resultDisplay.text = ""
                 canAddOperation = false
                 canAddDot= true
             }
 
-            binding.btDeletar.setOnClickListener {
-                var string = binding.expressao.text.toString()
+            binding.btLimpar.setOnClickListener {
+                var string = binding.input.text.toString()
                 if (string.isNotBlank()) {
                     if (string.last() == '.')
                         canAddDot = true
                     string = string.substring(0, string.length - 1)
-                    binding.expressao.text = string
+                    binding.input.setText(string)
 
                     canAddOperation = if (string.isNotBlank()){
                         !(string.last() == '*' || string.last() == '-' || string.last() == '+' ||  string.last() == '/')
                     } else
                         false
                 }
-                binding.resultado.text = ""
+                binding.resultDisplay.text = ""
+
+                //move o cursor para o final quando apaga algo
+                binding.input.setSelection(binding.input.text.length)
             }
 
-            binding.btResultado.setOnClickListener {
+            binding.btResult.setOnClickListener {
                 try {
-                    val expressao = ExpressionBuilder(binding.expressao.text.toString()).build()
+                    val expressao = ExpressionBuilder(binding.input.text.toString()).build()
 
                     val resultado = expressao.evaluate()
                     val longResult = resultado.toLong()
 
                     if (resultado == longResult.toDouble()){
                         //resultado int
-                        binding.resultado.text = longResult.toString()
+                        binding.resultDisplay.text = longResult.toString()
                     } else {
                         //resultado double
                         val result = String.format("%.9f", resultado).toDouble()
-                        binding.resultado.text = result.toString()
+                        binding.resultDisplay.text = result.toString()
+
                     }
                 }catch (e: Exception){
                     avisoExpressao()
@@ -139,36 +168,49 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ChangeSystemBarsTheme(lightTheme: Boolean) {
         val mycollor = Color.Transparent
+
+        val quasePreta = Color(0xFF000000)
+        val quaseBranca = Color(0xFFEFEFEF)
+
         if (lightTheme) {
             enableEdgeToEdge(
                 statusBarStyle = SystemBarStyle.light(Color.White.toArgb(), mycollor.toArgb()),
                 navigationBarStyle = SystemBarStyle.light(mycollor.toArgb(), mycollor.toArgb()))
         } else {
             enableEdgeToEdge(
-                statusBarStyle = SystemBarStyle.dark(Color.Black.toArgb()),
-                navigationBarStyle = SystemBarStyle.dark(Color.Black.toArgb()))
+                //muda a cor do fundo para cinza aqui, no modo noturno
+                statusBarStyle = SystemBarStyle.dark(mycollor.toArgb()),
+                navigationBarStyle = SystemBarStyle.dark(mycollor.toArgb()))
+
+            binding.input.setBackgroundColor(quaseBranca.toArgb())
+            binding.resultDisplay.setBackgroundColor(quaseBranca.toArgb())
+
+            binding.inputHorizontalScrollView.setBackgroundColor(quaseBranca.toArgb())
+            binding.resultDisplayHorizontalScrollView.setBackgroundColor(quaseBranca.toArgb())
+
+            binding.constrLayout.setBackgroundColor(quasePreta.toArgb())
         }
     }
 
     fun AcrescentarExpressao(string: String, limparDados: Boolean){
-        if (binding.resultado.text.isNotEmpty()){
-            binding.expressao.text = ""
+        if (binding.resultDisplay.text.isNotEmpty()){
+            binding.input.setText("")
         }
 
         if (limparDados){
-            binding.resultado.text = ""
+            binding.resultDisplay.text = ""
             if (string == "." && canAddDot){
-                binding.expressao.append(string)
+                binding.input.append(string)
                 canAddDot = false
             } else if (!canAddDot && string == ".") {
                 Toast.makeText(this, "Ponto já adicionado",Toast.LENGTH_SHORT).show()
             } else {
-                binding.expressao.append(string)
+                binding.input.append(string)
             }
         } else {
-            binding.expressao.append(binding.resultado.text)
-            binding.expressao.append(string)
-            binding.resultado.text = ""
+            binding.input.append(binding.resultDisplay.text)
+            binding.input.append(string)
+            binding.resultDisplay.text = ""
         }
     }
 
